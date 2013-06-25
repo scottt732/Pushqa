@@ -14,35 +14,36 @@
     <script type="text/javascript">
         $(function () {
             // This is our default connection
-            var connection = $.connection('../events/ProcessInformation');
+            var connection = $.connection('../events');
+
+            var resource = connection.registerResource('ProcessInformation', '');
 
             // Setup the message handler
-            subscribeToConnection(connection);
+            subscribeToConnection(resource);
             
-            connection.start();
+            connection.start(function () {
+                connection.initializeResources();
+            });
 
             // Change the filter when the checkbox is clicked
             $('#cpuFilter').click(function () {
                 var cpuFilterCheck = $(this);
-                connection.stop();
                 $('#messages').empty();
                 if (cpuFilterCheck.is(':checked')) {
                     // Pass the oData URI equivalent of CpuTime > 0 to filter only processes that are using CPU
-                    connection = $.connection('../events/ProcessInformation/', { $filter: "(CpuTime gt 0)" });
+
+                    resource.updateFilter("(CpuTime gt 0)");
                 }
                 else {
-                    connection = $.connection('../events/ProcessInformation/');
+                    resource.updateFilter('');
                 }
-                // Setup the message handler on our new connection
-                subscribeToConnection(connection);
-                
-                connection.start();
             });
+
+            resource.updateFilter('');
         });
 
-        function subscribeToConnection(connection) {
-            connection.asObservable().subscribe(function (data) {
-                
+        function subscribeToConnection(resource) {
+            resource.asObservable().subscribe(function (data) {
                 if (data == null || data.Name == null) {
                     return;
                 }

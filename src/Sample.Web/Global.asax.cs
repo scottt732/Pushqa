@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Web.Routing;
 using Pushqa.Server.SignalR;
 using System.Web.Mvc;
@@ -16,7 +17,6 @@ namespace Sample.Web {
 
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
-            
         }
 
         public static void RegisterGlobalFilters(GlobalFilterCollection filters) {

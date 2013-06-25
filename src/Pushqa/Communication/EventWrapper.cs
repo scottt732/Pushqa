@@ -27,6 +27,11 @@ namespace Pushqa.Communication {
         }
 
         /// <summary>
+        /// Gets or sets the resource.
+        /// </summary>
+        public string Resource { get; set; }
+
+        /// <summary>
         /// Gets or sets the event type.
         /// </summary>
         /// <value>The type.</value>

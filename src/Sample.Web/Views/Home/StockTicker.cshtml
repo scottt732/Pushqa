@@ -14,25 +14,27 @@
     <script type="text/javascript">
         $(function () {
             // This is our default connection
-            var connection = $.connection('../events/Stocks');
-            getConnectionFilter(connection);
+            var connection = $.connection('../events');
+            var resource = connection.registerResource('Stocks');
+
+            getResourceFilter(resource);
             
             // Setup the message handler
-            subscribeToConnection(connection);
+            subscribeToResource(resource);
 
             connection.start();
 
 
             $('.StockOption').click(function () {
                 $('#messages').empty();
-                connection.stop();
-                getConnectionFilter(connection);
-                connection.start();
+                // connection.stop();
+                getResourceFilter(resource);
+                // connection.start();
             });
 
         });
 
-        function getConnectionFilter(connection) {
+        function getResourceFilter(resource) {
             // Figure out the filter parameters from the checked boxes
             
             var stockFilters = $(":checked").map(function () {
@@ -41,20 +43,21 @@
             
             
             if (stockFilters.length == 0) {
-                connection.qs = null;
+                resource.clearFilter();
                 $("#currentUrl").html('');
                 return;
             }
 
             var filter = stockFilters.join(' or ');
-            connection.qs = { $filter:  filter};
+            resource.updateFilter(filter);
+            
             $("#currentUrl").html('$filter=' + filter);
         }
 
 
-        function subscribeToConnection(connection) {
+        function subscribeToResource(resource) {
 
-            connection.asObservable().subscribe(function (data) {
+            resource.asObservable().subscribe(function (data) {
                 
                 if (data == null || data.Length == 0) {
                     return;

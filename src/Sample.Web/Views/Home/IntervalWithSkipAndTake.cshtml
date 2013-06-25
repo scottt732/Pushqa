@@ -12,18 +12,25 @@
 <div>
     <script type="text/javascript">
         $(function () {
+            var everStarted = false;
+
             // Setup our connection
-            var connection = $.connection('../events/OneSecondTimer', { $filter: "(MessageId mod 2) eq 0", $skip: 2, $top: 5 });
+            // var connection = $.connection('../events/OneSecondTimer', { $filter: "(MessageId mod 2) eq 0", $skip: 2, $top: 5 });
+            var connection = $.connection('../events');
+            var resource = connection.registerResource('OneSecondTimer', "(MessageId mod 2) eq 0");
             
             // Append each message received
-            connection.asObservable().subscribe(
+            resource.asObservable().subscribe(
                 function (data) {
+                    debugger;
                     $('#messages').append('<li>Id=' + data.MessageId + ', Description=' + data.Description + ', Timestamp=' + data.TimeStamp + '</li>');
                 },
                 function (error) {
+                    debugger;
                     $('#messages').append('<li>Error: ' + error + '</li>');
                 },
                 function () {
+                    debugger;
                     connection.stop();
                     $('#messages').append('<li>Complete</li>');
                 }
@@ -33,14 +40,25 @@
                 $('#messages').append("'<li>Starting Connection</li>");
             });
 
-            connection.start();
+            connection.start(function () {
+                for (var resourceName in connection.resources) {
+                    debugger;
+                    connection.resources[resourceName].onConnected();
+                }
+            });
 
             $("#connect").click(function () {
-                connection.start();
+                connection.start(function () {
+                    for (var resourceName in connection.resources) {
+                        debugger;
+                        connection.resources[resourceName].onConnected();
+                    }
+                });
             });
 
             $("#disconnect").click(function () {
                 connection.stop();
+               
             });
         });
 

@@ -4,6 +4,7 @@ namespace Pushqa {
     /// <summary>
     /// An exception that occurs when a OnError is called on the event source
     /// </summary>
+    [Serializable]
     public class PushqaEventSourceException : Exception {
         /// <summary>
         /// Initializes a new instance of the <see cref="PushqaEventSourceException"/> class.

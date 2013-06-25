@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Linq;
+using Microsoft.AspNet.SignalR.Client;
 using Pushqa.Communication;
 using Pushqa.Infrastructure;
 using Pushqa.Linq;
-using Microsoft.AspNet.SignalR.Client;
 
 namespace Pushqa.SignalR {
     /// <summary>

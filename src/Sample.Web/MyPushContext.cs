@@ -6,17 +6,18 @@ using System.IO;
 using System.Linq;
 using System.Management;
 using System.Reactive.Linq;
-using System.Web;
 using Sample.Common;
 using Sample.Web.Tracing;
 using ProcessInfo = Sample.Common.ProcessInfo;
 
 namespace Sample.Web {
-    public class MyPushContext {
+    public class MyPushContext
+    {
         /// <summary>
         /// Gets a one second timer that produces a new message each second with an incrementing id and timestamp.
         /// </summary>
         /// <value>The one second timer.</value>
+        /*
         public IQbservable<MyMessage> OneSecondTimer {
             get { 
                 return Observable.Interval(TimeSpan.FromSeconds(1))
@@ -29,6 +30,7 @@ namespace Sample.Web {
                     .AsQbservable(); 
             }
         }
+        */
 
         /// <summary>
         /// Gets the server's process information.
@@ -37,12 +39,13 @@ namespace Sample.Web {
         public IQbservable<ProcessInfo> ProcessInformation {
             get {
                 return (from i in Observable.Interval(TimeSpan.FromSeconds(1))
-                       from processInfo in GetProcessInformation().ToObservable()
-                       select processInfo).AsQbservable();
+                        from processInfo in GetProcessInformation().ToObservable()
+                        select processInfo).AsQbservable();
             }
 
         }
 
+        /*
         private IEnumerable<IGrouping<DateTime, Stock>> stocks;
 
         /// <summary>
@@ -70,6 +73,7 @@ namespace Sample.Web {
                         select dateStock).AsQbservable();
             }
         }
+        */
 
         private IEnumerable<ProcessInfo> GetProcessInformation() {
             Debug.WriteLine("Getting Process Information");
